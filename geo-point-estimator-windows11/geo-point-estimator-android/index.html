@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b1220" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="icon.png" />
+  <title>Estimador de Coordenada</title>
+  <style>
+    :root{--bg:#0b1220;--panel:#121c2b;--panel-2:#162235;--accent:#71b7ff;--text:#eaf1f8;
+      --muted:#9eb3c7;--border:rgba(255,255,255,.10);--danger:#ff8a8a;}
+    *{box-sizing:border-box}
+    body{margin:0;color:var(--text);font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;
+      background:radial-gradient(circle at top,rgba(113,183,255,.16),transparent 40%),
+        linear-gradient(180deg,#09101c,var(--bg));min-height:100vh;
+      padding:env(safe-area-inset-top) 14px calc(env(safe-area-inset-bottom) + 24px);}
+    .wrap{max-width:560px;margin:0 auto;padding-top:18px}
+    h1{font-size:24px;margin:0 0 2px}
+    .sub{color:var(--muted);font-size:13px;margin:0 0 14px}
+    .badge{display:inline-block;font-size:11px;color:var(--accent);border:1px solid var(--border);
+      padding:3px 9px;border-radius:999px;margin-bottom:14px}
+    .card{background:rgba(18,28,43,.92);border:1px solid var(--border);border-radius:18px;
+      padding:16px;margin-bottom:14px}
+    label{display:block;font-size:12px;color:#d7e4f0;font-weight:600;margin:10px 0 5px}
+    input[type=text],input[type=number]{width:100%;border:1px solid var(--border);
+      background:var(--panel-2);color:var(--text);border-radius:12px;padding:13px 12px;
+      font-size:16px;outline:none}
+    input:focus{border-color:rgba(113,183,255,.6)}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .hint{color:var(--muted);font-size:11px;margin-top:4px}
+    .seg{display:flex;gap:8px;margin-top:6px}
+    .seg label{flex:1;margin:0;display:flex;align-items:center;justify-content:center;gap:6px;
+      border:1px solid var(--border);border-radius:999px;padding:10px;font-weight:500;cursor:pointer}
+    .chk{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:13px;color:#d7e4f0}
+    .file{display:flex;align-items:center;gap:10px;margin-top:6px}
+    button{appearance:none;border:0;border-radius:12px;padding:13px 14px;font-size:15px;
+      font-weight:700;cursor:pointer;width:100%}
+    .primary{background:linear-gradient(135deg,#7dc0ff,#4aa5ff);color:#09111b;margin-top:14px}
+    .ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
+    .mini{padding:10px;font-size:13px;width:auto}
+    .alert{background:rgba(255,138,138,.12);color:#ffd5d5;border:1px solid rgba(255,138,138,.32);
+      padding:12px;border-radius:12px;font-size:13px;margin-top:10px}
+    .ok{background:rgba(120,255,190,.10);color:#bdf6da;border:1px solid rgba(120,255,190,.28);
+      padding:10px 12px;border-radius:12px;font-size:12px;margin-top:10px}
+    .results{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
+    .res{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:14px;padding:12px}
+    .res span{display:block;color:var(--muted);font-size:11px;margin-bottom:5px}
+    .res strong{font-size:16px;word-break:break-word}
+    .res.big{grid-column:1 / -1}
+    .det{border-top:1px solid var(--border);margin-top:12px;padding-top:10px;color:#dce7f2;
+      font-size:13px;line-height:1.5}
+    .actions2{display:flex;gap:8px;margin-top:12px}
+    a.maplink{color:var(--accent);text-decoration:none;font-weight:600}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Estimador de coordenada</h1>
+    <p class="sub">Aponte o ponto observado pelo drone. Funciona offline.</p>
+    <span class="badge" id="geodBadge">Geodésia: WGS84</span>
+
+    <div class="card">
+      <div class="actions2">
+        <button class="ghost mini" id="btnGps" type="button">Usar meu GPS</button>
+        <button class="ghost mini" id="btnExample" type="button">Exemplo</button>
+      </div>
+
+      <div class="row">
+        <div><label>Latitude do drone</label><input id="lat" type="text" inputmode="decimal" value="-15.793889"></div>
+        <div><label>Longitude do drone</label><input id="lon" type="text" inputmode="decimal" value="-47.882778"></div>
+      </div>
+      <div class="row">
+        <div><label>Altitude drone ASL (m)</label><input id="droneAlt" type="text" inputmode="decimal" value="350"></div>
+        <div><label>Altitude terreno ASL (m)</label><input id="terrainAlt" type="text" inputmode="decimal" value="290"></div>
+      </div>
+      <div class="hint">Altitude do terreno é usada só sem DEM.</div>
+      <div class="row">
+        <div><label>Ângulo câmera (°)</label><input id="angle" type="text" inputmode="decimal" value="20"></div>
+        <div><label>Azimute (°)</label><input id="azimuth" type="text" inputmode="decimal" value="135"></div>
+      </div>
+      <div class="hint">Azimute: 0 norte, 90 leste, 180 sul, 270 oeste.</div>
+
+      <label>Referência do ângulo</label>
+      <div class="seg">
+        <label><input type="radio" name="mode" value="vertical" checked> Da vertical</label>
+        <label><input type="radio" name="mode" value="horizon"> Do horizonte</label>
+      </div>
+
+      <label>Relevo (DEM GeoTIFF) — opcional</label>
+      <div class="file">
+        <input type="file" id="demFile" accept=".tif,.tiff" style="font-size:13px">
+      </div>
+      <div class="hint" id="demStatus">Sem DEM = terreno plano. Com DEM = relevo real (EPSG:4326).</div>
+
+      <label class="chk"><input type="checkbox" id="curv" checked> Corrigir curvatura da Terra + refração</label>
+
+      <button class="primary" id="btnCalc" type="button">Calcular</button>
+    </div>
+
+    <div class="card" id="outCard" style="display:none">
+      <div id="out"></div>
+    </div>
+  </div>
+
+  <script src="geotiff.js"></script>
+  <script src="geo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
