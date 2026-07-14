@@ -30,6 +30,13 @@
   h2{margin:14px 0 6px;font-size:20px}
   p.desc{margin:0;color:var(--muted);font-size:13.5px;line-height:1.5}
   .go{margin-top:14px;font-weight:700;color:var(--accent)}
+  .tag.dem{color:#ffcf8a;border-color:rgba(255,207,138,.4)}
+  .dem{margin-top:16px;display:flex;gap:18px;align-items:center;justify-content:space-between;flex-wrap:wrap;
+    background:rgba(18,28,43,.92);border:1px solid var(--border);border-radius:20px;box-shadow:var(--shadow);padding:20px 22px}
+  .dem .desc{max-width:420px}
+  a.dembtn{white-space:nowrap;text-decoration:none;font-weight:700;color:#09111b;
+    background:linear-gradient(135deg,#ffd9a0,#ffbf6b);border-radius:14px;padding:13px 18px;transition:.15s}
+  a.dembtn:hover{transform:translateY(-2px)}
   .note{margin-top:24px;color:var(--muted);font-size:12.5px;line-height:1.5;
     border-top:1px solid var(--border);padding-top:16px}
   @media(max-width:640px){.cards{grid-template-columns:1fr}}
@@ -55,6 +62,15 @@
       <p class="desc">Terreno plano, detecta automaticamente se o alvo está acima ou abaixo do drone. Curvatura corrigida nos dois sentidos.</p>
       <div class="go">Abrir →</div>
     </a>
+  </div>
+
+  <div class="dem">
+    <div>
+      <span class="tag dem">Relevo · DEM</span>
+      <h2 style="margin:12px 0 6px;font-size:19px">Arquivo de elevação (SRTM)</h2>
+      <p class="desc">GeoTIFF de relevo para carregar no estimador e obter a coordenada pela interseção do raio da câmera com o terreno real. Baixe e selecione no campo de DEM.</p>
+    </div>
+    <a class="dembtn" href="output_SRTMGL1.tif" download>⭳ Baixar DEM (SRTM ~7,5 MB)</a>
   </div>
 
   <p class="note">A versão Windows (aplicativo Python <code>app.py</code>) roda localmente pelo <code>run_windows.bat</code> e não fica disponível neste site — o GitHub Pages serve apenas as páginas web acima. Código-fonte no repositório <a style="color:var(--accent)" href="https://github.com/3ESAV-UAS/GeoPointer2.0">3ESAV-UAS/GeoPointer2.0</a>.</p>
