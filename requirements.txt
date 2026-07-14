@@ -1,0 +1,4 @@
+# Dependencias para precisao alta
+geographiclib>=2.0
+rasterio>=1.3
+numpy>=1.24
