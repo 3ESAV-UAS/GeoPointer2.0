@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>GeoPointer 2.0</title>
+<style>
+  :root{
+    --bg:#0b1220; --accent:#71b7ff; --up:#5affcd;
+    --text:#eaf1f8; --muted:#9eb3c7; --border:rgba(255,255,255,0.08);
+    --shadow:0 20px 60px rgba(0,0,0,0.35);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;color:var(--text);
+    display:flex;align-items:center;justify-content:center;padding:28px 18px;
+    background:radial-gradient(circle at top left,rgba(113,183,255,0.18),transparent 34%),
+      radial-gradient(circle at top right,rgba(90,255,205,0.10),transparent 26%),
+      linear-gradient(180deg,#09101c 0%,var(--bg) 100%);}
+  .wrap{width:100%;max-width:760px}
+  .eyebrow{color:var(--accent);text-transform:uppercase;letter-spacing:.16em;font-size:12px;font-weight:700}
+  h1{margin:6px 0 0;font-size:clamp(30px,5vw,46px);line-height:1.05}
+  .sub{margin:12px 0 26px;color:var(--muted);font-size:15px;line-height:1.55;max-width:640px}
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  a.card{display:block;text-decoration:none;color:inherit;background:rgba(18,28,43,.92);
+    border:1px solid var(--border);border-radius:20px;box-shadow:var(--shadow);padding:22px;transition:.15s}
+  a.card:hover{border-color:rgba(113,183,255,.55);transform:translateY(-2px)}
+  .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+    padding:4px 10px;border-radius:999px;border:1px solid var(--border);color:var(--accent)}
+  .tag.web{color:var(--up);border-color:rgba(90,255,205,.4)}
+  h2{margin:14px 0 6px;font-size:20px}
+  p.desc{margin:0;color:var(--muted);font-size:13.5px;line-height:1.5}
+  .go{margin-top:14px;font-weight:700;color:var(--accent)}
+  .note{margin-top:24px;color:var(--muted);font-size:12.5px;line-height:1.5;
+    border-top:1px solid var(--border);padding-top:16px}
+  @media(max-width:640px){.cards{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">Ferramenta de geoposicionamento</div>
+  <h1>GeoPointer 2.0</h1>
+  <p class="sub">Estima a coordenada geográfica de um ponto observado por drone, a partir de posição, altitude, ângulo da câmera e azimute — com geodésia WGS84 e correção de curvatura da Terra.</p>
+
+  <div class="cards">
+    <a class="card" href="geo-point-estimator-windows11/geo-point-estimator-android/">
+      <span class="tag web">Web · PWA</span>
+      <h2>Estimador (versão web)</h2>
+      <p class="desc">Roda no navegador, funciona offline e pode ser instalado no celular. Usa GPS e aceita relevo (DEM) em lat/lon.</p>
+      <div class="go">Abrir →</div>
+    </a>
+
+    <a class="card" href="calculadora-visada-acima.html">
+      <span class="tag">Calculadora</span>
+      <h2>Visada acima / abaixo</h2>
+      <p class="desc">Terreno plano, detecta automaticamente se o alvo está acima ou abaixo do drone. Curvatura corrigida nos dois sentidos.</p>
+      <div class="go">Abrir →</div>
+    </a>
+  </div>
+
+  <p class="note">A versão Windows (aplicativo Python <code>app.py</code>) roda localmente pelo <code>run_windows.bat</code> e não fica disponível neste site — o GitHub Pages serve apenas as páginas web acima. Código-fonte no repositório <a style="color:var(--accent)" href="https://github.com/3ESAV-UAS/GeoPointer2.0">3ESAV-UAS/GeoPointer2.0</a>.</p>
+</div>
+</body>
+</html>
